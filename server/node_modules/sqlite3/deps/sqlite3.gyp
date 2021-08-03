@@ -1,5 +1,10 @@
 {
   'includes': [ 'common-sqlite.gypi' ],
+
+  'variables': {
+    'sqlite_magic%': '',
+  },
+
   'target_defaults': {
     'default_configuration': 'Release',
     'cflags':[
@@ -78,11 +83,13 @@
         'include_dirs': [ '<(SHARED_INTERMEDIATE_DIR)/sqlite-autoconf-<@(sqlite_version)/' ],
         'defines': [
           'SQLITE_THREADSAFE=1',
+          'HAVE_USLEEP=1',
           'SQLITE_ENABLE_FTS3',
           'SQLITE_ENABLE_FTS4',
           'SQLITE_ENABLE_FTS5',
           'SQLITE_ENABLE_JSON1',
-          'SQLITE_ENABLE_RTREE'
+          'SQLITE_ENABLE_RTREE',
+          'SQLITE_ENABLE_DBSTAT_VTAB=1'
         ],
       },
       'cflags_cc': [
@@ -91,15 +98,24 @@
       'defines': [
         '_REENTRANT=1',
         'SQLITE_THREADSAFE=1',
+        'HAVE_USLEEP=1',
         'SQLITE_ENABLE_FTS3',
         'SQLITE_ENABLE_FTS4',
         'SQLITE_ENABLE_FTS5',
         'SQLITE_ENABLE_JSON1',
-        'SQLITE_ENABLE_RTREE'
+        'SQLITE_ENABLE_RTREE',
+        'SQLITE_ENABLE_DBSTAT_VTAB=1'
       ],
       'export_dependent_settings': [
         'action_before_build',
-      ]
+      ],
+      'conditions': [
+        ["sqlite_magic != ''", {
+            'defines': [
+              'SQLITE_FILE_HEADER="<(sqlite_magic)"'
+            ]
+        }]
+      ],
     }
   ]
 }
