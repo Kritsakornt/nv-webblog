@@ -7,9 +7,6 @@ export default {
     show(userId){
         return Api().get('user/'+userId)
     },
-    show(userId){
-        return Api().get('user/'+userId)
-    },
     post(user){
         return Api().post('user',user)
     },
